@@ -1,0 +1,48 @@
+{% extends "spot/layout.html" %}
+{% load static %}
+
+{% block title %} Register {% endblock %}
+
+{% block body %}
+
+    <div class="loginForm-cont">
+        <img src="{% static 'spot/images/formdogwaving.jpg' %}" alt="dog image">
+
+        <form class="form-login register" method="post">
+            {% csrf_token %}
+            <h2 class="login-title">Register</h2>
+            <div class="mb-2">
+                <label for="UsernameInput" class="form-label">Username</label>
+                <input  name="username" type="text" class="form-control" id="UsernameInput" aria-describedby="emailHelp">
+            </div>
+            <div class="mb-2">
+                <label for="EmailInput" class="form-label">Email</label>
+                <input type="email" class="form-control" id="EmailInput" name="email">
+            </div>
+            <div class="mb-2">
+                <label for="NameInput" class="form-label">Name</label>
+                <input type="text" class="form-control" id="NameInput" name="name">
+            </div>
+            <div class="mb-2">
+                <label for="LastnameInput" class="form-label">Lastname</label>
+                <input type="text" class="form-control" id="LastnameInput" name="lastname">
+            </div>
+            <div class="mb-2">
+                <label for="BirthDateInput" class="form-label">Birthdate</label>
+                <input type="date" class="form-control" id="BirthDateInput" name="birthdate">
+            </div>
+            <div class="mb-2">
+                <label for="PasswordInput" class="form-label">Password</label>
+                <input type="password" class="form-control" id="PasswordInput" name="password">
+            </div>
+            <div class="mb-2">
+                <label for="RepeatInput" class="form-label">Repeat Password</label>
+                <input type="password" class="form-control" id="RepeatInput" name="repeatedPassword">
+            </div>
+            <button type="submit" class="login-btn register" id="login-btn">REGISTER</button>        
+            <div class="alert alert-info register" id="login-errmsg" role="alert">{{registerMsg}}</div>
+        </form>
+
+    </div>
+
+{% endblock %}
