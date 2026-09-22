@@ -1,0 +1,6 @@
+.env
+textapi.py
+db.sqlite3
+.vscode
+venv
+__pycache__/
