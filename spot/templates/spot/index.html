@@ -1,10 +1,23 @@
 {% extends "spot/layout.html" %}
 {% load static %}
 
-{% block title %} SpotifyFriend {% endblock %}
+{% block title %} Classifier {% endblock %}
 
 {% block body %}
-    <div class="main_page">
-        <img src="{% static 'spot/images/MainPageDog.jpg' %}" class="img-fluid">
+    {% if is_authenticated == False %}
+    <div class="main_index-info">
+        <img src="{% static 'spot/images/detective_dog.png' %}" alt="detective_dog" class="main-img1">
+        <div class="index_info">
+            <div class="main_index-text">
+                <h2>Start rating your favorite music!</h2>
+                <a href="{% url 'login' %}">Login</a>
+            </div>
+            <img src="{% static 'spot/images/albums.jpg' %}" alt="albums" class="main-img2">
+        </div>
     </div>
+    {% else %}
+        <h2>Welcome User!</h2>
+        
+    {% endif %}
+
 {% endblock %}

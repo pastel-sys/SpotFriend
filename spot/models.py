@@ -1,4 +1,5 @@
 from django.contrib.auth.models import AbstractUser
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 
 # User model (Additional fields)
@@ -7,7 +8,6 @@ class User(AbstractUser):
     last_name = models.CharField(null=True, max_length=30)
     birthdate = models.DateField(blank=True, null=True)
     timezone = models.CharField(null=True, blank=True, max_length=50)
-    last_uts = models.BigIntegerField(null=True, blank=True)
 
 # Musical Genre model
 class Genre(models.Model):
@@ -19,48 +19,45 @@ class Artist(models.Model):
     tags = models.ManyToManyField(Genre)
     tags_fetched = models.BooleanField(default=False)
 
-# Feelings stores in our db
-class Feelings(models.Model):
-    name = models.CharField(unique=True)
-    score = models.FloatField(null=False)
+# Albums model
+class Album(models.Model):
+    name = models.TextField(null=False)
+    artist = models.ForeignKey(Artist, on_delete=models.CASCADE, related_name="album_owner")
+    release_year = models.IntegerField(null=False)
+    cover = models.URLField(null=False)
+    genres = models.ManyToManyField(Genre)
 
-# Diary Data
-class DailySummary(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user_data")
-    date = models.DateField(null=False)
-    top_tracks = models.JSONField(default=dict, blank=True)
-    total_scrobbles = models.IntegerField(default=0)
-    top_artist = models.ManyToManyField(Artist)
-    top_genres = models.ManyToManyField(Genre)
-
-    class Meta:
-        constraints = [
-            models.UniqueConstraint(
-                fields=("user", "date"), name="daily_data"
-            )
-        ]
-
-# Diary Daily
-class DiaryEntry(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user_diary")
-    user_entry = models.TextField(null=False)
-    date = models.DateField(null=False)
-    feeling = models.ForeignKey(Feelings, on_delete=models.CASCADE, related_name="daily_feeling")
+# Track model
+class Track(models.Model):
+    name = models.CharField(max_length=150, null=False)
+    album = models.ForeignKey(Album, on_delete=models.CASCADE, related_name="album_track")
+    duration = models.IntegerField()
+    track_position = models.IntegerField()
 
     class Meta:
         constraints = [
-            models.UniqueConstraint(
-                fields=("user", "date"), name="diary_entry"
-            )
+            models.UniqueConstraint(fields=["album", "track_position"], name="unique_relation_album_track_position")
         ]
 
-# Pet
-class PetState(models.Model): 
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user_pet")
-    current_feeling = models.ForeignKey(Feelings, on_delete=models.CASCADE, related_name="pet_feeling")
+# Rating model
+class Rating(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user_rating")
+    track = models.ForeignKey(Track, on_delete=models.CASCADE, related_name="user_track_rating")
+    score = models.FloatField(validators=[MaxValueValidator(10), MinValueValidator(0)])
+    created_at = models.DateField(null=False)
 
-# Pet Memory
-class PetMessage(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user_pet_msg")
-    date = models.DateTimeField(null=False)
-    msg = models.TextField(null=False)
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=["user", "track"], name="unique_relation_user_track_rating")
+        ]
+
+# AlbumRating model
+class AlbumRating(models.Model):
+    album = models.ForeignKey(Album, on_delete=models.CASCADE, related_name="album_rating")
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user_album_rating")
+    rating = models.FloatField(null=True)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=["user", "album"], name="unique_relation_user_album")
+        ]
