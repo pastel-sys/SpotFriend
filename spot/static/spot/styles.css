@@ -5,6 +5,7 @@ body {
 
 .navbar {
   background-color: #495bfd;
+  z-index: 3;
 }
 
 .navbar-brand img {
@@ -175,6 +176,63 @@ body {
   box-shadow: 0 6px 14px 0 #d2e8f4;
 }
 
+.lastfm-section {
+  display: flex;
+  flex-direction: row;
+  color: #fffbf4;
+  width: 100vw;
+  height: 100vh;
+}
+.lastfm-section .synchronize_lastfm {
+  border: 1px solid white;
+  width: 60vw;
+  min-width: 570px;
+  height: 35vh;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 15vw;
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: 0 6px 14px 0 #d2e8f4;
+  z-index: 3;
+}
+.lastfm-section .synchronize_lastfm h3 {
+  font-size: 3.5rem;
+}
+.lastfm-section .synchronize_lastfm a {
+  display: block;
+  background-color: #fffbf4;
+  color: black;
+  width: 200px;
+  border-radius: 10px;
+  padding: 8px;
+  margin-top: 30px;
+  font-size: 25px;
+  text-align: center;
+  text-decoration: none;
+}
+.lastfm-section .synchronize_lastfm a:hover {
+  color: black;
+}
+
+.bg_synch-img {
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  top: 57px;
+  filter: blur(2.8px);
+}
+
+.synch_bg-cover {
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  top: 57px;
+  background: linear-gradient(180deg, rgb(5, 21, 59) 0%, rgb(6, 18, 43) 50%, rgb(2, 9, 23) 100%);
+  opacity: 0.7;
+  z-index: 1;
+}
+
 @media (max-width: 1100px) {
   .main_index-info .main-img1 {
     display: none;
@@ -194,6 +252,13 @@ body {
   }
   .main_index-text a {
     top: 180px;
+  }
+  .lastfm-section .synchronize_lastfm h3 {
+    font-size: 2.5rem;
+  }
+  .lastfm-section .synchronize_lastfm {
+    min-width: 200px;
+    height: 42.8vh;
   }
 }
 .footer {

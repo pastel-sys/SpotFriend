@@ -16,8 +16,17 @@
         </div>
     </div>
     {% else %}
-        <h2>Welcome User!</h2>
-        
+    
+        <div class="lastfm-section">
+            <div class="synchronize_lastfm">
+                <h3>Please synchronize last_fm to start rating your favorite albums</h3>
+                <a href="{% url 'synchLastfm' %}">Sync</a>
+            </div>
+        </div>
+
+        <div class="synch_bg-cover"></div>
+        <img src="{% static 'spot/images/wallpaper_albums.jpg' %}" alt="albums" class="bg_synch-img">       
+
     {% endif %}
 
 {% endblock %}

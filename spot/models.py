@@ -8,6 +8,16 @@ class User(AbstractUser):
     last_name = models.CharField(null=True, max_length=30)
     birthdate = models.DateField(blank=True, null=True)
     timezone = models.CharField(null=True, blank=True, max_length=50)
+    lastfm_session_key = models.CharField(null=True, blank=True)
+    lastfm_username = models.CharField(null=True, blank=True)
+
+    @property
+    def has_session(self):
+        """The user has synchronized his account with lastfm"""
+        if self.lastfm_session_key:
+            return True
+        else:
+            return False
 
 # Musical Genre model
 class Genre(models.Model):

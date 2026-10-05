@@ -4,6 +4,7 @@ from spot.models import User, Genre, Artist, Album, Track, Rating, AlbumRating
 # Register your models here.
 class UserAdmin(admin.ModelAdmin):
     list_display = ["id", "first_name", "last_name", "email", "birthdate", "timezone", "password"]
+    exclude = ["lastfm_session_key"]
 
 class GenreAdmin(admin.ModelAdmin):
     list_display = ["id", "name"]
