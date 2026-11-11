@@ -2,23 +2,6 @@ from django.contrib.auth.models import AbstractUser
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 
-# User model (Additional fields)
-class User(AbstractUser):
-    first_name = models.CharField(null=True, max_length=30)
-    last_name = models.CharField(null=True, max_length=30)
-    birthdate = models.DateField(blank=True, null=True)
-    timezone = models.CharField(null=True, blank=True, max_length=50)
-    lastfm_session_key = models.CharField(null=True, blank=True)
-    lastfm_username = models.CharField(null=True, blank=True)
-
-    @property
-    def has_session(self):
-        """The user has synchronized his account with lastfm"""
-        if self.lastfm_session_key:
-            return True
-        else:
-            return False
-
 # Musical Genre model
 class Genre(models.Model):
     name = models.CharField(max_length=30, unique=True)
@@ -29,20 +12,54 @@ class Artist(models.Model):
     tags = models.ManyToManyField(Genre)
     tags_fetched = models.BooleanField(default=False)
 
+    def __str__(self):
+        return self.name
+    
 # Albums model
 class Album(models.Model):
     name = models.TextField(null=False)
     artist = models.ForeignKey(Artist, on_delete=models.CASCADE, related_name="album_owner")
-    release_year = models.IntegerField(null=False)
+    release_year = models.IntegerField(null=True, blank=True)
     cover = models.URLField(null=False)
-    genres = models.ManyToManyField(Genre)
+    genres = models.ManyToManyField(Genre, blank=True)
+    color_palette = models.JSONField(blank=True, null=True)
+
+    def __str__(self):
+        return self.name
+
+    @property
+    def get_main_color(self):
+        """Get album main color from the cover"""
+        red = self.color_palette[0][0]
+        green = self.color_palette[0][1]
+        blue = self.color_palette[0][2]
+        rgb = f"rgb({red}, {green}, {blue})"
+        return rgb
+
+# User model (Additional fields)
+class User(AbstractUser):
+    first_name = models.CharField(null=True, max_length=30)
+    last_name = models.CharField(null=True, max_length=30)
+    birthdate = models.DateField(blank=True, null=True)
+    timezone = models.CharField(null=True, blank=True, max_length=50)
+    lastfm_session_key = models.CharField(null=True, blank=True)
+    lastfm_username = models.CharField(null=True, blank=True)
+    favorite_albums = models.ManyToManyField(Album, blank=True)
+
+    @property
+    def has_session(self):
+        """The user has synchronized his account with lastfm"""
+        if self.lastfm_session_key:
+            return True
+        else:
+            return False
 
 # Track model
 class Track(models.Model):
     name = models.CharField(max_length=150, null=False)
     album = models.ForeignKey(Album, on_delete=models.CASCADE, related_name="album_track")
-    duration = models.IntegerField()
-    track_position = models.IntegerField()
+    duration = models.IntegerField(null=True, blank=True)
+    track_position = models.IntegerField(null=False)
 
     class Meta:
         constraints = [

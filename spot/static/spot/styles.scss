@@ -317,7 +317,387 @@ body {
 
 }
 
+// DASHBOARD
+.welcome-section {
+    width: 99.2vw;
+    height: 16vw;
+    background-color: $red-purple;
+    animation: nav-load 300ms;
+
+    h2 {
+        font-size: 8vw;
+        text-align: center;
+        animation: pop-up 1000ms;
+        color: $white-blue;
+    }
+
+    p {
+        font-size: 2vw;
+        text-align: center;
+        animation: pop-up 1000ms;
+        color: $white-blue; 
+    }
+}
+
+// FIRST ALBUMS SECTION
+.albums_section {
+    display: flex;
+    background-color: $purple;
+
+    @for $i from 1 through 10 {
+        .album_card:nth-of-type(#{$i}) {
+            grid-area: album#{$i};
+        }
+    }
+
+    .album-box {
+        display: grid;
+        grid-template-areas: "album1 album2"
+                            "album3 album4"
+                            "album5 album6"
+                            "album7 album8"
+                            "album9 album10";
+        margin-left: auto;
+        margin-right: auto;
+        justify-items: center;
+    }
+
+    .album_info {
+        display: none;
+    }
+
+    .album_card {
+        position: relative;
+        padding: 10px;
+        border-radius: 10px;
+        margin: 5px;
+        min-height: 300px;
+
+        .album_cover {
+            position: relative;
+            animation: pop-up 1.8s;
+            cursor: pointer;
+            z-index: 2;
+        }
+    }
+    
+    .vinyl {
+        opacity: 0;
+        position: absolute;
+        width: 8vw;
+        height: 8vw;
+        z-index: 1;
+    }
+
+    .album_card-active-right {
+        display: flex;
+        flex-direction: row-reverse;
+        max-width: 730px;
+        margin-top: 8px;
+        margin: 10px;
+        height: 15.7vw;
+        animation: album-card 2s forwards;
+        align-items: center;
+        justify-content: flex-start;
+
+        .album_info {
+            width: 24vw;
+            opacity: 0;
+            display: inline;
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: auto;
+            margin-bottom: auto;
+            animation: album-info 2s forwards;
+            animation-delay: 2.1s;
+            height: fit-content;
+            margin-left: 6px;
+
+            h2 {
+                font-size: 1.4vw;
+            }
+
+            ul {
+                height: 90px;
+                overflow: hidden;
+                padding: 0px;
+                li {
+                    list-style-type: none;
+                }
+            }
+
+            a {
+                display: block;
+                text-align: center;
+                cursor: pointer;
+                width: 100px;
+                background-color: $red-purple;
+                color: $white;
+                border-radius: 6px;
+                border: 1px solid transparent;
+            }
+            a:hover {
+                box-shadow: 0px 3px 10px rgb(107, 107, 107);
+                transition: box-shadow 800ms;
+            }
+        }
+
+        .album_cover {
+            width: 270px;
+            margin-top: auto;
+            margin-bottom: auto;
+        }
+        
+        img {
+            position: relative;
+            width: 250px;
+            margin-left: 10px;
+            z-index: 2;
+        }
+        img.vinyl {
+            width: 8vw;
+            transform: translateX(100px);
+            animation: vinyl-right 2s forwards;
+            animation-delay: 2s;
+            z-index: 1;
+        }
+    }
+    
+    .album_card-active-left {
+        display: flex;
+        flex-direction: row;
+        max-width: 730px;
+        margin-top: 8px;
+        margin: 10px;
+        height: 15.7vw;
+        animation: album-card 2s forwards;
+        align-items: center;
+        justify-content: flex-start;
+
+        .album_info {
+            width: 24vw;
+            opacity: 0;
+            display: inline;
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: auto;
+            margin-bottom: auto;
+            animation: album-info 2s forwards;
+            animation-delay: 2.1s;
+            height: fit-content;
+
+            h2 {
+                font-size: 1.4vw;
+            }
+
+            h4 {
+                font-size: 20px;
+            }
+
+            ul {
+                height: 90px;
+                overflow: hidden;
+                padding: 0px;
+                li {
+                    list-style-type: none;
+                }
+            }
+
+            a {
+                display: block;
+                text-align: center;
+                cursor: pointer;
+                width: 100px;
+                background-color: $red-purple;
+                color: $white;
+                border-radius: 6px;
+                border: 1px solid transparent;
+            }
+            a:hover {
+                box-shadow: 0px 3px 10px rgb(107, 107, 107);
+                transition: box-shadow 800ms;
+            }
+        }
+
+        .album_cover {
+            width: 270px;
+            margin-top: auto;
+            margin-bottom: auto;
+        }
+        
+        img {
+            position: relative;
+            width: 250px;
+            margin-right: 10px;
+            z-index: 2;
+        }
+        img.vinyl {
+            width: 8vw;
+            transform: translateX(-100px);
+            animation: vinyl-left 2s forwards;
+            animation-delay: 2s;
+            z-index: 1;
+        }
+    }
+}
+
+.loader {
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 0px;
+    left: 0px;
+    width: 100vw;
+    height: 100vh;
+    background-color: $purple;
+    z-index: 5;
+    transition: visibility 800ms, opacity 800ms;
+}
+
+.loader-hidden {
+    visibility: hidden;
+    opacity: 0;
+}
+
+.loader::after {
+    content: "";
+    width: 100px;
+    height: 100px;
+    border: 12px solid $light-green;
+    justify-content: center;
+    border-radius: 50%;
+    border-top-color: $dark-blue;
+    animation: loader-rotation 700ms ease infinite;
+}
+
+@keyframes loader-rotation {
+    0% {
+        rotate: 0deg;
+    }
+    100% {
+        rotate: 360deg;
+    }
+}
+
+@media (max-width: 1525px) {
+    .albums_section > .album-box {
+        grid-template-areas: "album1 album1"
+                            "album2 album2"
+                            "album3 album3"
+                            "album4 album4"
+                            "album5 album5"
+                            "album6 album6"
+                            "album7 album7"
+                            "album8 album8"
+                            "album9 album9"
+                            "album10 album10"; 
+    }
+
+    .albums_section .album_card-active-left {
+        .album_cover {
+            width: 190px;
+        }
+        .album_info {
+            margin: none;
+            h2 {
+                font-size: 2vw;
+            }
+        }
+    }
+
+    .albums_section .album_card-active-right {
+        .album_cover {
+            width: 190px;
+        }
+        .album_info {
+            margin: none;
+            h2 {
+                font-size: 2vw;
+            }
+        }
+    }
+}
+
+@media (max-width: 800px) {
+    .albums_section .album_card-active-left {
+        .album_info {
+            h2 {
+                font-size: 3vw;
+            }
+        }
+    }
+
+    .albums_section .album_card-active-right {
+        .album_info {
+            h2 {
+                font-size: 3vw;
+            }
+        }
+    }
+}
+
+@keyframes album-card {
+    0% {
+        width: 45%;
+    }
+    100% {
+        width: 100%;
+    }
+}
+
+@keyframes vinyl-right {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(-4px);
+    }
+}
+
+@keyframes vinyl-left {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0px);
+    }
+}
+
+@keyframes album-info {
+    0% {
+        opacity: 0;
+        scale: 0;
+    }
+    100% {
+        opacity: 1;
+        scale: 1;
+    }
+}
+
+@keyframes nav-load {
+    0% {
+        transform: translateY(-100%);
+    }
+    100% {
+        transform: translateY(0%);
+    }
+}
+
 // FOOTER 
 .footer {
     background-color: $light-blue;
 }
+
+// GENERAL ANIMATIONS
+@keyframes pop-up {
+    0% {
+        scale: 0;
+    }
+    100% {
+        scale: 1;
+    }
+}
+

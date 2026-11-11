@@ -7,8 +7,9 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
 from dotenv import load_dotenv
 from django.urls import reverse
-from .models import User
+from .models import User, Album
 from datetime import datetime
+from .services import register_favorite_albums, get_album_tracks
 
 # Keys to interact with the Lastfm API
 load_dotenv()
@@ -63,11 +64,21 @@ def dashboard(request):
         return redirect("http://127.0.0.1:8000/")
 
     user = request.user
-    
-    
+    register_favorite_albums(user)
+    albums = User.objects.get(username=user).favorite_albums.all().order_by("-id")[:10]
+
+    tracks = []
+    colors = []
+    for album in albums:
+        tracks.append(get_album_tracks(album))
+        colors.append(album.get_main_color)
+
+    albums_information = zip(albums, tracks, colors)
+
     return render(request, "spot/dashboard.html", {
         "is_authenticated": request.user.is_authenticated,
-        "user": user
+        "albums_information": albums_information,
+        "user": user,
     })
 
 # Login function 

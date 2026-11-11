@@ -4,5 +4,32 @@
 {% block title %} Dashboard {% endblock %}
 
 {% block body %}
-    <h2>Welcome {{user}}!</h2>
+    <div class="welcome-section">
+        <h2>Welcome {{user}}!</h2>
+        <p>Start rating your favorite albums!</p>
+    </div>
+
+    <div class="loader"></div>
+
+    <div class="albums_section">
+        <div class="album-box">
+        {% for album, tracks, color in albums_information %}
+            <div class="album_card" style="background-color: {{color}};">
+                <img src="{{album.cover}}" alt="{{album.name}}" class="album_cover">
+                <img src="{% static 'spot/images/album.gif' %}" class="vinyl">
+                <div class="album_info">
+                    <h2>{{ album.name }}</h2>
+                    <h4>Tracks</h4>
+                    <ul>
+                        {% for track in tracks %}
+                            <li>{{ track.name }}</li>
+                        {% endfor %}
+                    </ul>
+                    <a>Rate...</a>
+                </div>
+            </div>
+        {% endfor %}
+        </div>
+    </div>
+
 {% endblock %}
